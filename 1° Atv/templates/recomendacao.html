@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Recomendação de filmes</h1>
+
+    <form method="POST">
+        <label for="consulta">O que quer assistir?</label>
+        <input type="text" name="consulta" id="consulta" required>
+        <button type="submit">Buscar</button>
+    </form>
+
+    {% if consulta %} 
+        <h2>Resultado para: '{{consulta}}'</h2>
+        {% if filmes %}
+            <ul>
+                {% for filme in filmes %}
+                    <li>{filme}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>nenhuma recomendação encontrada</p>
+        {% endif %}
+    {% endif %}
+    <a href="{{url_for('index')}}">voltar ao menu</a>
+</body>
+</html>

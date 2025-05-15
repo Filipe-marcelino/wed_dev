@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>preencha o formulário</h1>
+    <form method="POST">
+        <label for="nome">Nome: </label>
+        <input type="text" id="nome" name="nome" required>
+        <br><br>
+        <label for="genero">Genero de Filme favorito: </label>
+        <select id="genero" name="genero">
+            <option value="açao">açao</option>
+            <option value="drama">drama</option>
+            <option value="comedia">comedia</option>
+            <option value="ficçao">ficçao</option>
+            <option value="terror">terror</option>
+        </select>
+        <br><br>
+        <input type="checkbox" id="notificacao" name="notificacao" value="sim">
+        <button type="submit">enviar</button>
+
+    </form>
+</body>
+</html>
