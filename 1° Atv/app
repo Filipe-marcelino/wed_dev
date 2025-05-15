@@ -1,0 +1,63 @@
+from flask import Flask, render_template, redirect, url_for,make_response,request
+
+app = Flask(__name__)
+
+recomendacoes = {
+    'acao' : ['John Wick', 'Mad Max: Estrada da Fúria', 'Missão Impossível'],
+    'comedia' : ['O Máskara', 'Se Beber, Não Case', 'Click'],
+    'terror':['Invocação do Mal', 'Hereditário', 'O Iluminado'],
+    'drama' : ['Clube da Luta', 'À Procura da Felicidade', 'A Espera de um Milagre'],
+    'ficçao' : ['Clube da Luta', 'À Procura da Felicidade', 'A Espera de um Milagre']
+}
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/cadastro',methods =['GET','POST'])
+def cadastro():
+    if request.method == 'POST':
+        nome = request.form.get('nome')
+        genero = request.form.get('genero')
+        notificacao = request.form.get('notificacao')
+
+        if nome and genero:
+            resp = make_response(redirect(url_for('preferencia')))
+            resp.set_cookie('nome',nome,max_age=60*60*24*7)
+            resp.set_cookie('genero', genero, max_age=60*60*24*7)
+            resp.set_cookie('notificacao','sim'if notificacao else 'nao', max_age=60*60*24*7)
+
+            return resp
+        
+        else:
+            return 'informações incompletas', 400
+        
+    return render_template('formulario.html')
+
+@app.route('/preferencia')
+def preferencia():
+    nome = request.cookies.get('nome')
+    genero = request.cookies.get('genero')
+    notificacao = request.cookies.get('notificacao')
+
+    return render_template('preferencia.html',nome=nome,genero=genero,notificacao=notificacao)
+
+
+
+@app.route('/recomendacao',methods = ['GET','POST'])
+def recomendacao():
+    filmes_encontrados = []
+    consulta = ''
+
+    if request.method == 'POST':
+        consulta = request.form.get('consulta','').lower()
+
+        for lista in recomendacoes.values():
+            for filme in lista:
+                if consulta in filme.lower():
+                    filmes_encontrados.append(filme)
+
+    return render_template('recomendacao.html', consulta=consulta, filmes_encontrados=filmes_encontrados)
+
+if __name__ == '__main__':
+    app.run(debug=True)
